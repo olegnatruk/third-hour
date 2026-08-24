@@ -15,7 +15,7 @@ This document is the implementation contract for the Third Hour virtual loyalty-
 |---|---|
 | Customer | Read their own profile, active card, completed-card collection, transactions, and QR token. |
 | Cashier | Authenticate as staff, scan a customer QR token, and submit an approved stamp or redemption action. |
-| Admin | View customers and transaction history; manage staff and approved manual adjustments. |
+| Admin | View customers and their history; make approved manual adjustments. |
 | Owner | Full operational control. |
 
 Pages alone do not grant access. Every database query and server endpoint must enforce the authenticated user's role.
@@ -44,15 +44,16 @@ Pages alone do not grant access. Every database query and server endpoint must e
 | `/api/auth/sign-in` | `POST` | Validates email-and-password credentials and establishes the Supabase cookie session. |
 | `/api/auth/sign-out` | `POST` | Ends the current Supabase session. |
 | `/api/auth/me` | `GET` | Returns the authenticated user's safe profile fields and role. |
+| `/api/auth/change-password` | `POST` | Changes the signed-in user's password; requires a new valid password. |
 
 Sign-up accepts `email`, `password`, and `displayName`. Sign-in accepts `email` and `password`; passwords must contain 8–72 characters.
 
 ## First-time Supabase setup
 
 1. Create the Supabase project; email authentication is enabled by default.
-2. Run `loyalty-card/backend/database/migrations/001_authentication.sql` through `004_loyalty_core.sql` in the Supabase SQL Editor, in numeric order.
-4. Copy `loyalty-card/.env.example` to `loyalty-card/.env.local` and supply the project URL and publishable key. Add the service-role key only for later server-only administrative actions.
-5. Do not commit `.env.local`; the project ignores it.
+2. Run `loyalty-card/backend/database/migrations/001_authentication.sql` through `010_fix_tenth_stamp_completion.sql` in the Supabase SQL Editor, in numeric order. Existing environments that already ran migrations 001–009 must also run 010 before any 10th-stamp test.
+3. Copy `loyalty-card/.env.example` to `loyalty-card/.env.local` and supply the project URL, publishable key, service-role key, and a random `QR_SIGNING_SECRET` at least 32 characters long.
+4. Do not commit `.env.local`; the project ignores it.
 
 The older `backend/.local.env` file is not loaded by Next.js. Use `.env.local` for local Next.js development.
 
@@ -62,6 +63,7 @@ The older `backend/.local.env` file is not loaded by Next.js. Use `.env.local` f
 |---|---|---|---|
 | `/api/admin/accounts` | `GET` | Admin or owner | Returns up to 100 accounts, including role and status. |
 | `/api/admin/accounts/:accountId` | `PATCH` | Owner only | Changes a non-owner account's role and/or status. |
+| `/api/admin/customers/:customerId/history` | `GET` | Admin or owner | Returns a customer's cards, ledger entries, and rewards. |
 
 The `PATCH` endpoint requires `SUPABASE_SERVICE_ROLE_KEY` in the server environment because it performs a controlled server-side update. Do not expose that key in a browser variable.
 
@@ -100,7 +102,27 @@ Migration `004_loyalty_core.sql` creates the first two loyalty tables:
 
 `GET /api/loyalty-card` returns the signed-in customer's active card and completed-card collection. It does not modify stamps.
 
-Reward definitions and redemptions remain a later migration because the completed-card reward has not been chosen.
+Migration `007_rewards_and_redemptions.sql` adds one configurable active reward definition, a reward entitlement for each completed card, and an immutable redemption record. It creates a clearly marked placeholder reward so the system is usable before Third Hour chooses the actual item; set the real reward through the owner endpoint before launch.
+
+## Stamp-award rule
+
+`POST /api/stamps/award` implements the initial confirmed rule: an active cashier, admin, or owner may award **one stamp** to an active customer card for an approved purchase. The request must include the customer's ID and a unique scan/purchase identifier (an idempotency key).
+
+- The same idempotency key never creates a second stamp.
+- Only server-side code with the service-role key may execute the database award function.
+- The transaction records the issuing staff member and cannot be edited or deleted.
+- Stamp 10 completes the card and creates the customer's next active card at 0/10 in the same database transaction.
+- Direct award is retained for controlled manual staff actions. QR scans use the safer QR-specific flow below.
+
+## QR-code endpoints
+
+| Endpoint | Method | Access | Purpose |
+|---|---|---|---|
+| `/api/loyalty-card/qr` | `POST` | Signed-in customer | Creates a signed QR token valid for 60 seconds. |
+| `/api/qr/scan` | `POST` | Active cashier, admin, or owner | Validates and consumes the token, then awards one stamp. |
+| `/api/qr/redeem` | `POST` | Active cashier, admin, or owner | Validates and consumes the token, then redeems the customer's oldest available completed-card reward. |
+
+Set a 32-character-or-longer random `QR_SIGNING_SECRET` in ignored `.env.local`. It signs QR payloads and must never be exposed to browser code. Each token may be used only once; replayed, tampered, or expired tokens are rejected.
 
 ## Card lifecycle
 
@@ -116,17 +138,32 @@ Never let a card exceed 10 stamps. Never use a mutable balance as the only recor
 
 ```text
 Customer opens virtual card
-→ backend issues a signed, short-lived QR token
+→ backend issues a signed, short-lived opaque QR token
 → authenticated cashier scans it
 → protected backend endpoint validates token and staff role
 → one controlled stamp or redemption transaction is recorded
 → customer card balance and collection update
 ```
 
-- QR data must not expose a raw customer ID, phone number, or other personal data.
-- A scanned token must be short-lived and protected against replay or duplicate processing.
+- QR data must not expose a raw customer ID, email address, or other personal data.
+- A scanned token is valid for 60 seconds, protected with an HMAC signature, and stored server-side as a one-time credential.
 - The backend must record the customer, card, cashier, action, timestamp, and reason when applicable.
 - A cashier must never be able to give themselves stamps or change account roles.
+
+## Rewards, history, and corrections
+
+| Endpoint | Method | Access | Purpose |
+|---|---|---|---|
+| `/api/loyalty-card/transactions` | `GET` | Signed-in customer | Reads the customer's immutable stamp history. Supports `?limit=1..100`. |
+| `/api/loyalty-card/rewards` | `GET` | Signed-in customer | Reads completed-card rewards and whether they were redeemed. |
+| `/api/admin/rewards` | `GET` | Admin or owner | Lists reward definitions. |
+| `/api/admin/rewards` | `POST` | Owner only | Replaces the active reward definition. Accepts `name` and optional `description`. |
+| `/api/stamps/adjust` | `POST` | Admin or owner | Adds or removes exactly one active-card stamp with a required reason and idempotency key. |
+
+- Completing card #10 automatically creates one reward entitlement, which keeps the card collectible even after redemption.
+- Reward redemption chooses the oldest unredeemed completed-card reward, and records the staff account and timestamp.
+- Manual corrections may add or remove only one stamp. They are permanent ledger entries; they do not edit old transactions.
+- A manual +1 adjustment that becomes the 10th stamp also completes the card, creates its entitlement, and starts the next card.
 
 ## Database access rules
 
@@ -140,14 +177,13 @@ Customer opens virtual card
 
 - Validate all input on the server.
 - Use database transactions for the 10th-stamp completion flow and reward redemption.
-- Make scan requests idempotent so refreshes or duplicate scans cannot issue extra stamps.
+- Make scan requests idempotent so refreshes or duplicate scans cannot issue extra stamps. QR tokens are one-time credentials for either an award or a redemption.
 - Keep an audit trail for reversals and manual adjustments, including staff member and reason.
 - Rate-limit sign-in and QR-scan endpoints.
 - Do not log credentials, tokens, or complete phone numbers.
 
 ## Open decisions
 
-- What reward is earned by a completed 10-stamp card?
 - Can cashiers issue more than one stamp per scan or transaction?
 - Who receives cashier versus admin access at launch?
 - How long should a QR token remain valid?

@@ -8,6 +8,18 @@ export type AuthCredentials = {
 
 export class CredentialsValidationError extends Error {}
 
+export function validatePassword(password: unknown) {
+  if (typeof password !== "string") {
+    throw new CredentialsValidationError("Password is required.");
+  }
+
+  if (password.length < 8 || password.length > 72) {
+    throw new CredentialsValidationError("Password must be between 8 and 72 characters.");
+  }
+
+  return password;
+}
+
 export function parseCredentials(input: unknown, allowDisplayName = false): AuthCredentials {
   if (!input || typeof input !== "object") {
     throw new CredentialsValidationError("Invalid request body.");
@@ -15,16 +27,13 @@ export function parseCredentials(input: unknown, allowDisplayName = false): Auth
 
   const { email, password, displayName } = input as Record<string, unknown>;
 
-  if (typeof email !== "string" || typeof password !== "string") {
+  if (typeof email !== "string") {
     throw new CredentialsValidationError("Email address and password are required.");
   }
-
-  if (password.length < 8 || password.length > 72) {
-    throw new CredentialsValidationError("Password must be between 8 and 72 characters.");
-  }
+  const validatedPassword = validatePassword(password);
 
   if (!allowDisplayName) {
-    return { email: normalizeEmailAddress(email), password };
+    return { email: normalizeEmailAddress(email), password: validatedPassword };
   }
 
   if (typeof displayName !== "string" || displayName.trim().length === 0) {
@@ -39,7 +48,7 @@ export function parseCredentials(input: unknown, allowDisplayName = false): Auth
 
   return {
     email: normalizeEmailAddress(email),
-    password,
+    password: validatedPassword,
     displayName: normalizedDisplayName,
   };
 }

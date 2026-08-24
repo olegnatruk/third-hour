@@ -66,6 +66,46 @@ Third Hour will use one repository with separate `website/` and `loyalty-card/` 
 
 **Impact:** The backend must create a new active card only when the current card completes at 10 stamps. Corrections use reversal or manual-adjustment transactions rather than editing or deleting history.
 
+## 2026-08-24 — Award one stamp per approved staff action
+
+**Status:** Accepted
+
+**Decision:** An active cashier, admin, or owner awards one stamp for each approved purchase. Every award requires a unique idempotency key.
+
+**Why:** Staff control prevents customers from self-awarding stamps, while idempotency prevents duplicate scans or retried requests from issuing extra stamps.
+
+**Impact:** The award flow uses a server-only database function. It records the issuing staff account and atomically completes a 10-stamp card before creating the next active card.
+
+## 2026-08-24 — Use short-lived, one-time QR scan tokens
+
+**Status:** Accepted
+
+**Decision:** Customer QR codes contain a signed opaque token valid for 60 seconds. A staff scan consumes the token once and awards the associated customer a stamp.
+
+**Why:** The QR code does not expose personal data, and a screenshot or retried scan cannot be replayed to award extra stamps.
+
+**Impact:** The backend stores QR-token lifecycle data, signs tokens with a server-only secret, and validates the scan before invoking the stamp-award transaction.
+
+## 2026-08-24 — Attach a configurable reward to every completed card
+
+**Status:** Accepted
+
+**Decision:** Each completed 10-stamp card creates one reward entitlement. A staff member may redeem the customer's oldest available entitlement through a one-time QR scan. The owner controls one active reward definition; the initial migration uses a placeholder until the café chooses the real reward.
+
+**Why:** This preserves the completed-card collection while giving staff a simple, auditable redemption workflow.
+
+**Impact:** Redemptions never delete cards or alter stamp history. The owner must configure the real reward before launch.
+
+## 2026-08-24 — Restrict stamp corrections to one auditable adjustment
+
+**Status:** Accepted
+
+**Decision:** Only active admins and owners can manually add or remove exactly one stamp, and every adjustment requires a reason and idempotency key.
+
+**Why:** It supports legitimate corrections without making the stamp ledger editable or giving cashiers broad adjustment power.
+
+**Impact:** Corrections are immutable `manual_adjustment` transactions. A +1 correction can complete a card using the same lifecycle rules as a normal award.
+
 ## Decision template
 
 ### YYYY-MM-DD — Decision title

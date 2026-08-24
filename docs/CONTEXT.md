@@ -19,7 +19,12 @@ Use this document to leave the next founder or AI agent with the minimum context
 - Role boundaries were partially verified with the local customer test account: it is `active` with role `customer`; account listing and account-update endpoints correctly returned `403`.
 - Owner access was verified: the owner account is `active`, authenticated successfully, and received `200` from the admin account-list endpoint.
 - Owner account-management was verified with the configured server-only key: a no-op customer-role update returned `200`, while an attempted owner self-role change was rejected with `400`.
-- The loyalty core migration and read endpoint are ready. Migration `004_loyalty_core.sql` has not been applied or live-tested yet.
+- The loyalty core migration and read endpoint are applied and live-tested. The customer test account has active card #1 at 0/10 stamps and no completed cards.
+- Stamp-award code and migration `005_stamp_awards.sql` are applied and live-tested. An owner issued one stamp to the disposable customer account; repeating the same request was idempotent, and the customer now has 1/10 stamps with no completed card.
+- The remaining backend implementation is ready for database setup: QR scan tokens, completed-card reward entitlements/redemptions, manual one-stamp corrections, customer history APIs, reward administration, and authenticated password changes.
+- Migrations `006_qr_scan_tokens.sql` through `010_fix_tenth_stamp_completion.sql` are applied and live-tested. QR award completion, one-time replay rejection, automatic next-card creation, reward entitlement creation/redemption, admin correction idempotency, and manual-adjustment completion all passed.
+- The disposable customer test account now has two completed 10-stamp cards and a new active card at 0/10. One test reward has been redeemed; the other remains as completed-card test history.
+- The configured default reward is deliberately a placeholder (`Completed Card Reward`); the owner must replace it through `POST /api/admin/rewards` before launch.
 
 ## Open questions
 
@@ -27,14 +32,13 @@ Use this document to leave the next founder or AI agent with the minimum context
 - What are the first must-have pages for the café website?
 - What is the simplest loyalty experience that works for customers and staff?
 - Which GitHub account or organization will host the shared repository?
-- What reward does a completed 10-stamp card provide, and how is it redeemed?
 - Which people need admin or cashier access at launch?
 - Which Supabase project will be used, and who will create the initial owner account?
 - Which account should become the first owner, and which staff need cashier or admin access?
 
 ## Next useful action
 
-Run migration `004_loyalty_core.sql` and test the authenticated customer loyalty-card read endpoint before implementing stamp issuance, completion, and QR scanning.
+Begin the customer and staff dashboard UI, using the documented protected API contracts.
 
 ## Update template
 
