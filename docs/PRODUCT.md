@@ -15,7 +15,7 @@ Third Hour is a café project with two connected digital products:
 
 ## Loyalty-card first release
 
-- Customers create an account and sign in with a mobile number and password.
+- Customers create an account and sign in with an email address and password.
 - Customers can see their active 0–10 stamp card, completed-card collection, and virtual loyalty-card QR code.
 - Admins can view registered customers, scan a customer QR code, and award stamps.
 - SMS verification and one-time passwords are not part of the initial release.

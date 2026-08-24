@@ -35,7 +35,7 @@ Only after sending that reply may the agent continue with the requested work. Th
 
 ## Protected ownership boundary
 
-`loyalty-card/backend/` and `loyalty-card/src/app/api/` are owned by the repository owner, who is responsible for the loyalty-card backend. Agents working for the other founder must **not create, edit, move, rename, or delete** anything in either directory unless the owner explicitly authorizes the exact change in the current conversation. They may read these areas only when necessary to understand an agreed integration, and must propose any backend change for approval instead of applying it.
+`loyalty-card/backend/`, `loyalty-card/src/app/api/`, and `loyalty-card/src/lib/supabase/` are owned by the repository owner, who is responsible for the loyalty-card backend. Agents working for the other founder must **not create, edit, move, rename, or delete** anything in these directories unless the owner explicitly authorizes the exact change in the current conversation. They may read these areas only when necessary to understand an agreed integration, and must propose any backend change for approval instead of applying it.
 
 ## Keeping memory current
 
@@ -53,5 +53,5 @@ Record durable product or technical choices in `docs/DECISIONS.md`. Keep entries
 - Repository structure: a single monorepo with separate `website/` and `loyalty-card/` projects.
 - The founders want this repository to serve as shared long-term context for their AI-assisted work.
 - The loyalty card is a Next.js TypeScript application backed by Supabase Auth and Postgres.
-- Customers use a mobile number and password; the first release has no SMS verification or OTP login.
+- Customers use an email address and password. Email-confirmation behavior is controlled in Supabase Auth settings.
 - A card completes at 10 stamps, remains in the customer's permanent collection, and is followed by a new active card.
