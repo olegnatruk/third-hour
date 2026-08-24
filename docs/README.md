@@ -7,6 +7,7 @@ This folder is the project’s shared memory. Keep it useful for both founders a
 - [Product overview](PRODUCT.md) — what Third Hour is building and why.
 - [Working context](CONTEXT.md) — current status, open questions, and next actions.
 - [Decision log](DECISIONS.md) — decisions that should not be rediscovered each session.
+- [Loyalty-card backend blueprint](BACKEND.md) — roles, data boundaries, QR scanning, and backend invariants.
 
 ## Documentation principles
 

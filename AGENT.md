@@ -11,11 +11,15 @@ This repository is the shared workspace for Third Hour, a café project being bu
 
 ## How agents should work here
 
-1. Read `docs/README.md`, `docs/PRODUCT.md`, `docs/CONTEXT.md`, and `docs/DECISIONS.md` before proposing substantial work.
+1. Read `docs/README.md`, `docs/PRODUCT.md`, `docs/CONTEXT.md`, `docs/DECISIONS.md`, and—when the loyalty card is in scope—`docs/BACKEND.md` before proposing substantial work.
 2. Treat documented decisions as current unless a founder explicitly changes them.
 3. Ask before making a product, branding, pricing, data, or deployment decision that is not documented.
 4. Keep the website and loyalty-card code independent unless a documented shared component is intentionally introduced.
 5. Do not store passwords, API keys, customer data, or private personal details in this repository.
+
+## Frontend design skill
+
+Impeccable is installed project-locally at `.agents/skills/impeccable`. Agents working on the café website or loyalty-card user interface should use it for frontend design work. It is not needed for backend-only work and does not override the protected backend ownership boundary below.
 
 ## Required welcome before any work
 
@@ -48,3 +52,6 @@ Record durable product or technical choices in `docs/DECISIONS.md`. Keep entries
 - Café name: **Third Hour**.
 - Repository structure: a single monorepo with separate `website/` and `loyalty-card/` projects.
 - The founders want this repository to serve as shared long-term context for their AI-assisted work.
+- The loyalty card is a Next.js TypeScript application backed by Supabase Auth and Postgres.
+- Customers use a mobile number and password; the first release has no SMS verification or OTP login.
+- A card completes at 10 stamps, remains in the customer's permanent collection, and is followed by a new active card.

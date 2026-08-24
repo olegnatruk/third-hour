@@ -26,6 +26,16 @@ Third Hour will use one repository with separate `website/` and `loyalty-card/` 
 
 **Impact:** Account creation and login must use Supabase phone-and-password authentication. The product must clearly handle account recovery as a later decision.
 
+## 2026-08-24 — Complete loyalty cards at 10 stamps and preserve them
+
+**Status:** Accepted
+
+**Decision:** A loyalty card completes after its 10th stamp. The completed card remains visible in the customer's permanent collection, and the system automatically starts a new active card with zero stamps.
+
+**Why:** Completed cards are both a customer achievement history and a reliable record of earned rewards.
+
+**Impact:** Stamp transactions must belong to a specific card. Completing the 10th stamp must atomically close that card and create the next active card. Completed cards must never be deleted when redeemed.
+
 ## Decision template
 
 ### YYYY-MM-DD — Decision title
