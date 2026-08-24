@@ -8,6 +8,24 @@ Record decisions that future work should follow. If a decision changes, add a ne
 
 Third Hour will use one repository with separate `website/` and `loyalty-card/` directories. This supports shared collaboration while keeping each product clearly scoped.
 
+## 2026-08-24 — Build the loyalty card with Next.js and Supabase
+
+**Status:** Accepted
+
+**Decision:** The loyalty-card app will use Next.js with TypeScript for its customer and admin experiences. Supabase will provide authentication and the Postgres database. Server-side business logic will live in `loyalty-card/backend/` and protected API routes in `loyalty-card/src/app/api/`.
+
+**Why:** One application keeps customer and admin workflows, deployments, and shared UI simple while still supporting protected server-side endpoints.
+
+**Impact:** Customer pages, admin pages, and API routes remain in the same Next.js application. The repository owner controls backend and API changes.
+
+## 2026-08-24 — Use phone number and password for customer login
+
+**Status:** Accepted
+
+**Decision:** Customers will use an internationally formatted mobile number and password. The first release will not require SMS verification or one-time passwords.
+
+**Impact:** Account creation and login must use Supabase phone-and-password authentication. The product must clearly handle account recovery as a later decision.
+
 ## Decision template
 
 ### YYYY-MM-DD — Decision title
