@@ -38,7 +38,55 @@ Use this document to leave the next founder or AI agent with the minimum context
 
 ## Next useful action
 
-Begin the customer and staff dashboard UI, using the documented protected API contracts.
+Polish the frontend against Figma (parity pass at 402px), then wire real brand
+assets and the Profile/Settings designs.
+
+## Session log
+
+### 2026-08-27 — Loyalty-card frontend, first build (Figma → code)
+
+- **Completed:**
+  - Built the full `loyalty-card/` frontend for all 11 Figma "Screens"
+    (file `0iJaVR61JcoElU0u4Q6U0p`) as a faithful design-to-code pass.
+  - Foundations: design tokens + dark/cream themes in `src/app/globals.css`
+    (`@theme`), Cormorant Garamond + Inter via `next/font`, 19 line icons
+    committed under `public/icons/` and mirrored in `src/components/ui/Icon.tsx`.
+  - Component library in `src/components/ui/` (Button, Input, TopBar,
+    BottomTabBar, LoyaltyCard, StampGrid, ProgressRow, StatusBadge, ListRow,
+    QRDisplay, EmptyState, Segmented, Sheet, InfoNote, LogoLockup,
+    SectionHeading, Panel).
+  - Frontend-only data layer in `src/lib/api/` (typed `apiFetch` for the
+    browser, `serverFetch` for RSC that forwards the session cookie) and
+    `src/lib/auth/session.ts` page guards. The frontend calls the backend
+    **only** through the existing `/api/**` routes — no imports of
+    `@/lib/supabase/*` or `@backend/*`, nothing in the protected dirs changed.
+  - Routes: `(auth)/sign-in`, `(auth)/sign-up`, `/` role redirect;
+    `customer/` (My Card, Completed Cards, History, My QR, Profile, Settings)
+    with the bottom tab bar; `staff/` (QR scanner + scan/redeem result,
+    `@zxing/browser` camera + manual entry); `admin/` (customer directory,
+    customer history with tabs, manual stamp adjustment sheet);
+    `owner/` (accounts role/status editor, active-reward editor).
+  - New deps: `qrcode` (customer QR render), `@zxing/browser` + `@zxing/library`
+    (staff camera scan). `.claude/launch.json` added for the dev server.
+  - Verified live against Supabase: sign-in → role redirect; customer screens
+    with real card/reward/transaction data; QR issue → `POST /api/qr/scan`
+    award → scan-result screen. Admin/owner screens verified by temporarily
+    promoting the disposable `TEST_AUTH_EMAIL` account to `owner` (reverted to
+    `customer` after). `npm run build`, `lint`, and `tsc` all pass.
+- **Decided:**
+  - Both token sets (dark + cream) exist; each screen renders a fixed theme
+    (cream only on `/sign-up`). No runtime theme switcher.
+  - Impeccable's generative workflow was intentionally skipped — Figma is the
+    single source of truth. No `DESIGN.md` generated.
+- **Open:**
+  - Profile, Settings, and "forgot password" have no Figma frames — built
+    minimally from the design system; need real designs.
+  - The dashboard "how it works" strip is text-only (Figma has small
+    illustrations to add).
+  - Brand colours/voice/logo still per `PRODUCT.md` "Still to define".
+  - The disposable test account's card #3 gained 2 stamps during scan testing.
+- **Next:** Figma parity pass (screenshot each route at 402px vs the frame),
+  then brand assets + the missing screen designs.
 
 ## Update template
 
