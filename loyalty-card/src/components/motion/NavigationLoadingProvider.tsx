@@ -24,8 +24,8 @@ export function NavigationLoadingProvider({
   const routeKey = pathname ?? "/";
   const previousRouteRef = useRef(routeKey);
   const startedAtRef = useRef<number | null>(null);
-  const settleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const failsafeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const settleTimerRef = useRef<number | null>(null);
+  const failsafeTimerRef = useRef<number | null>(null);
   const [visible, setVisible] = useState(false);
 
   const clearTimers = useCallback(() => {
