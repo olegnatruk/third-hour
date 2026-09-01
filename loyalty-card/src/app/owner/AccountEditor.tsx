@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api/client";
 import type { Account, AccountStatus, AppRole } from "@/lib/api/types";
-import { Button, Segmented, Sheet } from "@/components/ui";
+import { Button, Segmented, SheetOverlay } from "@/components/ui";
 
 const ROLE_OPTIONS = [
   { value: "customer", label: "Customer" },
@@ -54,15 +54,11 @@ export function AccountEditor({
   }
 
   return (
-    <div className="fixed inset-0 z-50 mx-auto flex max-w-[430px] flex-col justify-end bg-black/50">
-      <button
-        type="button"
-        aria-label="Close"
-        className="flex-1"
-        onClick={onClose}
-      />
-      <Sheet title={account.display_name ?? account.email}>
-        <div className="flex flex-col gap-4">
+    <SheetOverlay
+      title={account.display_name ?? account.email}
+      onClose={onClose}
+    >
+      <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <span className="text-caption text-muted">Role</span>
             <Segmented
@@ -97,7 +93,6 @@ export function AccountEditor({
             Cancel
           </Button>
         </div>
-      </Sheet>
-    </div>
+    </SheetOverlay>
   );
 }

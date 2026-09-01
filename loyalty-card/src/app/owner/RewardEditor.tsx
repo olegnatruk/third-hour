@@ -3,7 +3,7 @@
 import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api/client";
-import { Button, Input, Sheet } from "@/components/ui";
+import { Button, Input, SheetOverlay } from "@/components/ui";
 
 export function RewardEditor({
   initialName,
@@ -44,15 +44,8 @@ export function RewardEditor({
   }
 
   return (
-    <div className="fixed inset-0 z-50 mx-auto flex max-w-[430px] flex-col justify-end bg-black/50">
-      <button
-        type="button"
-        aria-label="Close"
-        className="flex-1"
-        onClick={onClose}
-      />
-      <Sheet title="Edit Reward">
-        <form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
+    <SheetOverlay title="Edit Reward" onClose={onClose}>
+      <form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
           <Input
             label="Reward name"
             value={name}
@@ -74,8 +67,7 @@ export function RewardEditor({
           <Button type="button" variant="ghost" onClick={onClose}>
             Cancel
           </Button>
-        </form>
-      </Sheet>
-    </div>
+      </form>
+    </SheetOverlay>
   );
 }

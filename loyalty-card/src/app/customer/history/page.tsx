@@ -2,6 +2,7 @@ import { serverFetch } from "@/lib/api/server";
 import type { StampTransaction, TransactionsResponse } from "@/lib/api/types";
 import { EmptyState, IconChip, ListRow, TopBar } from "@/components/ui";
 import type { IconName } from "@/components/ui";
+import { StaggerList, StaggerItem } from "@/components/motion/StaggerList";
 
 function describe(t: StampTransaction): {
   label: string;
@@ -78,11 +79,11 @@ export default async function HistoryPage() {
             body="Your stamp history will show up here after your first visit."
           />
         ) : (
-          <ul className="flex flex-col">
+          <StaggerList>
             {transactions.map((t, i) => {
               const d = describe(t);
               return (
-                <li key={t.id}>
+                <StaggerItem key={t.id} index={i}>
                   <ListRow
                     divider={i < transactions.length - 1}
                     leading={<IconChip name={d.icon} />}
@@ -98,10 +99,10 @@ export default async function HistoryPage() {
                       ) : undefined
                     }
                   />
-                </li>
+                </StaggerItem>
               );
             })}
-          </ul>
+          </StaggerList>
         )}
       </div>
     </>

@@ -1,4 +1,8 @@
+"use client";
+
+import { m } from "motion/react";
 import { cn } from "@/lib/cn";
+import { easeOut } from "@/components/motion/transitions";
 
 /** Figma node 31:32 — count, gold progress bar, helper message. */
 export function ProgressRow({
@@ -19,9 +23,11 @@ export function ProgressRow({
         {count} / {total}
       </p>
       <div className="h-1.5 w-full overflow-hidden rounded-[3px] bg-line">
-        <div
-          className="h-full rounded-[3px] bg-accent transition-[width] duration-300"
-          style={{ width: `${pct}%` }}
+        <m.div
+          className="h-full rounded-[3px] bg-accent"
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.5, ease: easeOut }}
         />
       </div>
       {message && <p className="text-body-sm text-muted">{message}</p>}

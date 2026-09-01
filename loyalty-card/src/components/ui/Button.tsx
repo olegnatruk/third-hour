@@ -1,16 +1,21 @@
+"use client";
+
 import type { ButtonHTMLAttributes } from "react";
+import { m } from "motion/react";
 import { cn } from "@/lib/cn";
 
 type Variant = "primary" | "secondary" | "ghost";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "onAnimationStart" | "onDrag" | "onDragStart" | "onDragEnd"
+> & {
   variant?: Variant;
   fullWidth?: boolean;
 };
 
 const base =
   "text-button inline-flex h-[52px] items-center justify-center rounded-[14px] px-6 " +
-  "transition-opacity duration-150 active:opacity-80 " +
   "disabled:pointer-events-none disabled:opacity-50 " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
@@ -27,11 +32,15 @@ export function Button({
   fullWidth = true,
   className,
   type = "button",
+  disabled,
   ...props
 }: ButtonProps) {
   return (
-    <button
+    <m.button
       type={type}
+      disabled={disabled}
+      whileTap={disabled ? undefined : { scale: 0.97 }}
+      transition={{ duration: 0.12 }}
       className={cn(base, variants[variant], fullWidth && "w-full", className)}
       {...props}
     />

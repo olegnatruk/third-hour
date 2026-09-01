@@ -1,0 +1,46 @@
+{
+  "title": "Choose the next Third Hour composition",
+  "question": "All three directions keep the approved espresso, cream, muted-gold, Cormorant, and real-café-photography world. Pick the page structure you want to see developed next—no website code changes are included in this round.",
+  "options": [
+    {
+      "id": "window-table",
+      "label": "The Window Table",
+      "kicker": "THE ROLL",
+      "lineage": "A quiet café table seen through a warm after-hours window",
+      "thesis": "Arrival comes first: one intimate table setting makes Third Hour feel like a place you can step into.",
+      "palette": ["#0f0d0c", "#f5efe3", "#c9a159", "#b9b0a2"],
+      "materials": ["walnut-paper grain", "window reflections", "gold hairlines", "cropped Third Hour photography"],
+      "viewport": "A lit table and drink image occupies the left two-thirds; a tall serif promise, location cue, and two clear actions stack in a slim cream-edged right column.",
+      "risk": "The most atmospheric option; it needs strong real photography so it never becomes a generic night-café mood board.",
+      "comp": ".impeccable/mocks/decision/window-table.png"
+    },
+    {
+      "id": "night-shift-menu",
+      "label": "The Night Shift Menu",
+      "lineage": "A café counter menu reorganised as an elegant late-hour service board",
+      "thesis": "The menu is the invitation: a visitor can feel the café’s rhythm and choose their first drink immediately.",
+      "palette": ["#0f0d0c", "#f5efe3", "#c9a159", "#b9b0a2"],
+      "materials": ["espresso board", "cream menu slips", "muted-gold service marks", "drink close-ups"],
+      "viewport": "A wide, numbered drink list holds the left side while one oversized drink portrait breaks the grid on the right; story and loyalty sit as compact service notes below the primary order cue.",
+      "risk": "The clearest menu-led option; the structural grid must stay editorial rather than reading like a food-delivery app.",
+      "comp": ".impeccable/mocks/decision/night-shift-menu.png"
+    },
+    {
+      "id": "stampbook-society",
+      "label": "The Stampbook Society",
+      "lineage": "A personal café stampbook opened on a table, with collected moments tucked inside",
+      "thesis": "Third Hour becomes a ritual worth returning to by making coffee, food, and the loyalty card feel like one keepsake.",
+      "palette": ["#0f0d0c", "#f5efe3", "#c9a159", "#b9b0a2"],
+      "materials": ["soft paper stock", "pressed stamp circles", "coffee-photo inserts", "subtle foil rules"],
+      "viewport": "A large opened stampbook fills the center; on one page is the café promise and drink image, on the other is a ten-stamp card and a direct loyalty invitation, with discovery links around its edges.",
+      "risk": "The most memorable loyalty bridge; it must preserve café discovery as the lead rather than making the public site feel like an account dashboard.",
+      "comp": ".impeccable/mocks/decision/stampbook-society.png"
+    }
+  ],
+  "reroll": true,
+  "steer": true,
+  "buildPath": {
+    "value": "comp",
+    "toggle": true
+  }
+}

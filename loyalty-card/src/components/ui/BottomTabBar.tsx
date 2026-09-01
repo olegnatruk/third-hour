@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { m } from "motion/react";
 import { cn } from "@/lib/cn";
+import { spring } from "@/components/motion/transitions";
 import { Icon, type IconName } from "./Icon";
 
 type TabKey = "home" | "history" | "qr" | "profile" | "settings";
@@ -72,7 +74,9 @@ export function BottomTabBar() {
               aria-current={active ? "page" : undefined}
               className="flex flex-1 items-center justify-center"
             >
-              <span
+              <m.span
+                whileTap={{ scale: 0.92 }}
+                transition={spring}
                 className={cn(
                   "flex size-14 items-center justify-center rounded-full bg-background text-foreground",
                   active
@@ -81,7 +85,7 @@ export function BottomTabBar() {
                 )}
               >
                 <Icon name="qr" />
-              </span>
+              </m.span>
             </Link>
           );
         }
@@ -96,7 +100,14 @@ export function BottomTabBar() {
               active ? "text-foreground" : "text-muted",
             )}
           >
-            <Icon name={tab.icon} size={22} />
+            <m.span
+              key={active ? "on" : "off"}
+              whileTap={{ scale: 0.9 }}
+              animate={active ? { scale: [1, 1.15, 1] } : undefined}
+              transition={{ duration: 0.32, ease: "easeOut" }}
+            >
+              <Icon name={tab.icon} size={22} />
+            </m.span>
             <span className="text-caption">{tab.label}</span>
           </Link>
         );

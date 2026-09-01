@@ -1,3 +1,12 @@
 # Local environment files — never commit credentials.
 *.local.env
+canvas/.local.env
+canvas/out/
 *.swp
+
+# JavaScript build artifacts across both Third Hour apps.
+**/node_modules/
+**/.next/
+
+# Local visual QA captures are generated evidence, not product source.
+**/.impeccable/review/

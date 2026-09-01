@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence } from "motion/react";
 import { initials } from "@/lib/format";
 import type { Account, RewardDefinition } from "@/lib/api/types";
 import {
@@ -141,16 +142,23 @@ export function ManageTabs({
         </>
       )}
 
-      {editing && (
-        <AccountEditor account={editing} onClose={() => setEditing(null)} />
-      )}
-      {editingReward && (
-        <RewardEditor
-          initialName={reward?.name ?? ""}
-          initialDescription={reward?.description ?? ""}
-          onClose={() => setEditingReward(false)}
-        />
-      )}
+      <AnimatePresence>
+        {editing && (
+          <AccountEditor
+            key="account-editor"
+            account={editing}
+            onClose={() => setEditing(null)}
+          />
+        )}
+        {editingReward && (
+          <RewardEditor
+            key="reward-editor"
+            initialName={reward?.name ?? ""}
+            initialDescription={reward?.description ?? ""}
+            onClose={() => setEditingReward(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

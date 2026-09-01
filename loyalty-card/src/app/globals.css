@@ -45,6 +45,8 @@
   --btn-secondary-line: #cdbfa8;
 
   --shadow-sheet: 0 -4px 32px rgb(0 0 0 / 0.35); /* elevation/sheet */
+  --coffee: #8c5434;
+  --coffee-foam: #e5c581;
 }
 
 @theme inline {
@@ -134,5 +136,402 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 1;
+  }
+
+  /* Third Hour route fallback: a pour-over, crema, and a responding cup. */
+  .coffee-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    color: var(--foreground);
+  }
+  .coffee-loader__art {
+    width: 200px;
+    height: 192px;
+    overflow: visible;
+  }
+  .coffee-loader__pot {
+    transform-box: fill-box;
+    transform-origin: 77% 82%;
+    animation: coffee-pour-pot 1.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    will-change: transform;
+  }
+  .coffee-loader__pot-body {
+    fill: var(--raised);
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+  .coffee-loader__line,
+  .coffee-loader__rim,
+  .coffee-loader__saucer,
+  .coffee-loader__handle,
+  .coffee-loader__splash,
+  .coffee-loader__steam {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .coffee-loader__stream {
+    fill: none;
+    stroke: var(--coffee);
+    stroke-width: 5.5;
+    stroke-linecap: round;
+    stroke-dasharray: 4 7;
+    animation: coffee-pour-stream 1.5s linear infinite;
+  }
+  .coffee-loader__stream--thin {
+    stroke-width: 2;
+    animation-delay: -0.12s;
+  }
+  .coffee-loader__cup {
+    fill: var(--raised);
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+  .coffee-loader__coffee {
+    fill: var(--coffee);
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: coffee-pour-fill 1.5s cubic-bezier(0.32, 0, 0.25, 1) infinite;
+    will-change: transform;
+  }
+  .coffee-loader__cup-group {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: coffee-pour-cup 1.5s cubic-bezier(0.32, 0, 0.25, 1) infinite;
+    will-change: transform;
+  }
+  .coffee-loader__rim {
+    stroke: var(--coffee-foam);
+    stroke-width: 2.5;
+  }
+  .coffee-loader__crema {
+    fill: none;
+    stroke: var(--coffee-foam);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-dasharray: 42 16;
+    animation: coffee-pour-crema 1.5s ease-in-out infinite;
+  }
+  .coffee-loader__handle {
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .coffee-loader__saucer {
+    stroke: var(--line);
+  }
+  .coffee-loader__saucer--inner {
+    stroke: var(--coffee-foam);
+    stroke-width: 1.5;
+  }
+  .coffee-loader__shadow {
+    fill: rgb(0 0 0 / 0.28);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: coffee-pour-shadow 1.5s ease-in-out infinite;
+  }
+  .coffee-loader__pot-detail {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  .coffee-loader__lid-dot {
+    fill: var(--coffee-foam);
+  }
+  .coffee-loader__drop {
+    fill: var(--coffee);
+    opacity: 0;
+    animation: coffee-pour-drop 1.5s ease-out infinite;
+  }
+  .coffee-loader__drop--two {
+    animation-delay: -0.12s;
+  }
+  .coffee-loader__splash {
+    stroke: var(--coffee-foam);
+    stroke-width: 2;
+    opacity: 0;
+    animation: coffee-pour-splash 1.5s ease-out infinite;
+  }
+  .coffee-loader__splash--right {
+    animation-delay: -0.08s;
+  }
+  .coffee-loader__steam {
+    stroke: var(--muted);
+    stroke-width: 1.5;
+    animation: coffee-pour-steam 1.5s ease-in-out infinite;
+  }
+  .coffee-loader__steam--late {
+    animation-delay: -0.45s;
+  }
+  .coffee-loader__steam--later {
+    animation-delay: -0.82s;
+  }
+  .coffee-loader__label {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 18px;
+    text-transform: uppercase;
+  }
+  .navigation-loader {
+    position: absolute;
+    z-index: 50;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    background: var(--background);
+  }
+  .loyalty-card__header {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        ellipse 85% 130% at 8% -34%,
+        rgb(235 238 242 / 0.31) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 52% 90% at 91% 12%,
+        rgb(167 177 190 / 0.24) 0%,
+        transparent 68%
+      ),
+      linear-gradient(145deg, #70757d 0%, #454a52 30%, #262a30 57%, #101216 82%, #070808 100%);
+    background-position: 0% 0%, 100% 0%, center;
+    background-size: 140% 145%, 160% 160%, 100% 100%;
+    animation: loyalty-card-header-life 12s ease-in-out infinite alternate;
+  }
+  .loyalty-card__shine {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      120deg,
+      transparent 35%,
+      rgb(231 235 240 / 0.025) 44%,
+      rgb(231 235 240 / 0.3) 50%,
+      rgb(231 235 240 / 0.025) 56%,
+      transparent 65%
+    );
+    transform: translate3d(-120%, -40%, 0);
+    animation: loyalty-card-shine 5.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes coffee-pour-pot {
+  0%,
+  12%,
+  88%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25%,
+  70% {
+    transform: rotate(11deg);
+  }
+}
+
+@keyframes coffee-pour-stream {
+  0%,
+  16%,
+  80%,
+  100% {
+    opacity: 0;
+  }
+  26%,
+  69% {
+    opacity: 1;
+    stroke-dashoffset: -22;
+  }
+}
+
+@keyframes coffee-pour-fill {
+  0%,
+  19% {
+    transform: scaleY(0.08);
+  }
+  74% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes coffee-pour-cup {
+  0%,
+  22%,
+  100% {
+    transform: translateY(0);
+  }
+  62% {
+    transform: translateY(1.5px);
+  }
+  75% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes coffee-pour-crema {
+  0%,
+  24%,
+  100% {
+    opacity: 0.15;
+    stroke-dashoffset: 20;
+  }
+  50%,
+  73% {
+    opacity: 1;
+    stroke-dashoffset: -18;
+  }
+}
+
+@keyframes coffee-pour-drop {
+  0%,
+  58%,
+  100% {
+    opacity: 0;
+    transform: translateY(-2px) scale(0.7);
+  }
+  66% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  78% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.5);
+  }
+}
+
+@keyframes coffee-pour-splash {
+  0%,
+  59%,
+  100% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.7);
+  }
+  67% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  76% {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.9);
+  }
+}
+
+@keyframes coffee-pour-shadow {
+  0%,
+  22%,
+  100% {
+    opacity: 0.55;
+    transform: scaleX(1);
+  }
+  66% {
+    opacity: 0.76;
+    transform: scaleX(0.9);
+  }
+}
+
+@keyframes coffee-pour-steam {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(2px);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes loyalty-card-shine {
+  0% {
+    opacity: 0;
+    transform: translate3d(-120%, -40%, 0);
+  }
+  6% {
+    opacity: 0.75;
+  }
+  29% {
+    opacity: 0.75;
+    transform: translate3d(120%, 40%, 0);
+  }
+  36%,
+  100% {
+    opacity: 0;
+    transform: translate3d(120%, 40%, 0);
+  }
+}
+
+@keyframes loyalty-card-header-life {
+  0% {
+    background-position: 0% 0%, 100% 0%, center;
+  }
+  100% {
+    background-position: 10% 9%, 91% -7%, center;
+  }
+}
+
+/* Motion library handles JS animations; this neutralises CSS ones too. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .coffee-loader__pot,
+  .coffee-loader__stream,
+  .coffee-loader__coffee,
+  .coffee-loader__cup-group,
+  .coffee-loader__crema,
+  .coffee-loader__drop,
+  .coffee-loader__splash,
+  .coffee-loader__shadow,
+  .coffee-loader__steam {
+    animation: none !important;
+  }
+  .coffee-loader__pot {
+    transform: rotate(7deg);
+  }
+  .coffee-loader__stream {
+    opacity: 0.9;
+  }
+  .coffee-loader__coffee {
+    transform: scaleY(0.72);
+  }
+  .coffee-loader__cup-group {
+    transform: translateY(0);
+  }
+  .coffee-loader__crema,
+  .coffee-loader__drop,
+  .coffee-loader__splash {
+    opacity: 0.9;
+  }
+  .coffee-loader__steam {
+    opacity: 0.7;
+  }
+  .loyalty-card__shine {
+    animation: none !important;
+    opacity: 0.24;
+    transform: translate3d(0, 0, 0);
+  }
+  .loyalty-card__header {
+    animation: none !important;
   }
 }

@@ -43,6 +43,38 @@ assets and the Profile/Settings designs.
 
 ## Session log
 
+### 2026-08-31 — Loyalty-card animation pass (Framer Motion)
+
+- **Completed:**
+  - Added `motion` (Framer Motion) via `src/components/motion/MotionProvider.tsx`
+    (`LazyMotion` + `domAnimation`, `MotionConfig reducedMotion="user"`), wired in
+    `src/app/layout.tsx`. Added a `prefers-reduced-motion` block to `globals.css`.
+  - Motion primitives in `src/components/motion/`: `transitions.ts` (shared
+    spring/easing/variants), `PageTransition`, `StaggerList`/`StaggerItem`,
+    `AnimatedCheck`, `CelebrationBurst`. New `src/components/ui/SheetOverlay.tsx`.
+  - Enter transitions per area via `src/app/{(auth),customer,staff,admin,owner}/template.tsx`.
+  - Signature moments: newest stamp pops (`StampGrid` → client, adjust-state-on-
+    prop-change), scan-result circle/`AnimatedCheck`/progress reveal + a
+    `CelebrationBurst` when `cardCompleted`.
+  - Polish: `Button` whileTap, `BottomTabBar` tap + active-icon pop, `QRDisplay`
+    state crossfade + expiring pulse, `EmptyState` fade-in, list stagger on
+    history / completed / admin directory / customer-history tabs, animated
+    `ProgressRow` bar. Owner editors now use the animated `SheetOverlay` wrapped
+    in `AnimatePresence`.
+  - Verified live (dev server, mobile viewport): route transitions, list stagger,
+    QR page, owner sheet slide/exit, and the full 9→10 scan → card-complete
+    celebration — no console errors. `build`, `lint`, `tsc` clean.
+- **Decided:**
+  - `motion` over GSAP (per request); enter-only route transitions (no exit
+    cross-fade); springs kept to 2 keyframes (multi-keyframe pops use tweens).
+- **Open:**
+  - Reduced-motion path implemented three ways but not emulated in this session —
+    verify via DevTools → Rendering → emulate `prefers-reduced-motion`.
+  - Drag-to-dismiss on sheets deferred (needs the heavier `domMax` feature set).
+  - Concurrent `next dev` + `npm run build` corrupted the dev server once — stop
+    the preview before building.
+- **Next:** Figma parity pass; reduced-motion QA; consider `loading.tsx` skeletons.
+
 ### 2026-08-27 — Loyalty-card frontend, first build (Figma → code)
 
 - **Completed:**

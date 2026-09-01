@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api/client";
+import { startNavigationLoader } from "@/components/motion/navigationLoading";
 import { Button } from "@/components/ui";
 
 export function SignOutButton() {
@@ -20,6 +21,7 @@ export function SignOutButton() {
         } catch {
           // ignore — clear client state regardless
         }
+        startNavigationLoader();
         router.replace("/sign-in");
         router.refresh();
       }}

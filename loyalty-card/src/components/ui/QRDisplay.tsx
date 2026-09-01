@@ -1,5 +1,9 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/cn";
+import { spring } from "@/components/motion/transitions";
 import { Icon } from "./Icon";
 
 export type QrState = "active" | "expiring" | "expired" | "success";
@@ -44,18 +48,25 @@ export function QRDisplay({
   qr?: ReactNode;
 }) {
   const caption = CAPTION[state];
+  const reduce = useReducedMotion();
+
   return (
     <div className="flex flex-col items-center gap-4 py-2">
       <div
         className={cn(
-          "grid size-[216px] place-items-center rounded-[14px] bg-white p-[18px]",
+          "grid size-[216px] place-items-center rounded-[14px] bg-white p-[18px] transition-opacity",
           state === "expired" && "opacity-30",
         )}
       >
         {state === "success" ? (
-          <span className="flex size-24 items-center justify-center rounded-full bg-success text-white">
+          <m.span
+            initial={{ scale: 0.4, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={spring}
+            className="flex size-24 items-center justify-center rounded-full bg-success text-white"
+          >
             <Icon name="check" size={28} />
-          </span>
+          </m.span>
         ) : (
           <div className="size-[180px] [&>img]:size-full [&>img]:[image-rendering:pixelated]">
             {qr}
@@ -63,10 +74,29 @@ export function QRDisplay({
         )}
       </div>
 
-      <p className={cn("text-[22px] font-semibold leading-none", caption.tone)}>
-        {caption.headline(countdown)}
-      </p>
-      <p className="text-body-sm text-muted">{caption.sub}</p>
+      <AnimatePresence mode="wait" initial={false}>
+        <m.div
+          key={state}
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={{ duration: 0.18 }}
+          className="flex flex-col items-center gap-4"
+        >
+          <m.p
+            className={cn("text-[22px] font-semibold leading-none", caption.tone)}
+            animate={
+              state === "expiring" && !reduce
+                ? { scale: [1, 1.04, 1] }
+                : undefined
+            }
+            transition={{ duration: 1, repeat: Infinity }}
+          >
+            {caption.headline(countdown)}
+          </m.p>
+          <p className="text-body-sm text-muted">{caption.sub}</p>
+        </m.div>
+      </AnimatePresence>
     </div>
   );
 }

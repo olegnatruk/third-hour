@@ -14,6 +14,7 @@ import {
   EmptyState,
 } from "@/components/ui";
 import type { IconName } from "@/components/ui";
+import { StaggerList, StaggerItem } from "@/components/motion/StaggerList";
 
 type Tab = "stamps" | "cards" | "rewards";
 
@@ -86,11 +87,11 @@ export function HistoryTabs({ history }: { history: CustomerHistoryResponse }) {
         (history.transactions.length === 0 ? (
           <EmptyState icon="history" title="No stamp activity" />
         ) : (
-          <ul className="flex flex-col">
+          <StaggerList resetKey="stamps">
             {history.transactions.map((t, i) => {
               const m = txMeta(t);
               return (
-                <li key={t.id}>
+                <StaggerItem key={t.id} index={i}>
                   <ListRow
                     divider={i < history.transactions.length - 1}
                     leading={<IconChip name={m.icon} />}
@@ -108,16 +109,16 @@ export function HistoryTabs({ history }: { history: CustomerHistoryResponse }) {
                       ) : undefined
                     }
                   />
-                </li>
+                </StaggerItem>
               );
             })}
-          </ul>
+          </StaggerList>
         ))}
 
       {tab === "cards" && (
-        <ul className="flex flex-col">
+        <StaggerList resetKey="cards">
           {history.cards.map((c, i) => (
-            <li key={c.id}>
+            <StaggerItem key={c.id} index={i}>
               <ListRow
                 divider={i < history.cards.length - 1}
                 primary={`Card #${c.card_number}`}
@@ -133,18 +134,18 @@ export function HistoryTabs({ history }: { history: CustomerHistoryResponse }) {
                   />
                 }
               />
-            </li>
+            </StaggerItem>
           ))}
-        </ul>
+        </StaggerList>
       )}
 
       {tab === "rewards" &&
         (history.rewards.length === 0 ? (
           <EmptyState icon="gift" title="No rewards yet" />
         ) : (
-          <ul className="flex flex-col">
+          <StaggerList resetKey="rewards">
             {history.rewards.map((r, i) => (
-              <li key={r.id}>
+              <StaggerItem key={r.id} index={i}>
                 <ListRow
                   divider={i < history.rewards.length - 1}
                   leading={<IconChip name="gift" />}
@@ -156,9 +157,9 @@ export function HistoryTabs({ history }: { history: CustomerHistoryResponse }) {
                     />
                   }
                 />
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggerList>
         ))}
     </div>
   );

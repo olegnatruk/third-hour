@@ -11,6 +11,7 @@ import {
   StatusBadge,
   EmptyState,
 } from "@/components/ui";
+import { StaggerList, StaggerItem } from "@/components/motion/StaggerList";
 
 type Filter = "all" | "active" | "suspended";
 
@@ -67,9 +68,9 @@ export function DirectoryList({ accounts }: { accounts: Account[] }) {
           body="Try a different name, email, or filter."
         />
       ) : (
-        <ul className="flex flex-col">
+        <StaggerList resetKey={`${filter}:${visible.length}`}>
           {visible.map((a, i) => (
-            <li key={a.id}>
+            <StaggerItem key={a.id} index={i}>
               <ListRow
                 href={`/admin/customers/${a.id}`}
                 divider={i < visible.length - 1}
@@ -89,9 +90,9 @@ export function DirectoryList({ accounts }: { accounts: Account[] }) {
                   </span>
                 }
               />
-            </li>
+            </StaggerItem>
           ))}
-        </ul>
+        </StaggerList>
       )}
     </div>
   );

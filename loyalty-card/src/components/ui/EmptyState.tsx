@@ -1,4 +1,8 @@
+"use client";
+
+import { m } from "motion/react";
 import { cn } from "@/lib/cn";
+import { fadeInUp } from "@/components/motion/transitions";
 import { Icon, type IconName } from "./Icon";
 
 /** Figma node 42:219 — icon badge + serif title + muted body. */
@@ -14,7 +18,10 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div
+    <m.div
+      variants={fadeInUp}
+      initial="hidden"
+      animate="show"
       className={cn(
         "flex flex-col items-center gap-3 px-8 py-10 text-center",
         className,
@@ -25,6 +32,6 @@ export function EmptyState({
       </span>
       <h2 className="text-display text-foreground">{title}</h2>
       {body && <p className="text-body text-muted">{body}</p>}
-    </div>
+    </m.div>
   );
 }

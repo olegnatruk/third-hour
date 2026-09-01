@@ -15,15 +15,12 @@ export function LoyaltyCard({
   return (
     <div
       className={cn(
-        "w-full overflow-hidden rounded-[20px] border border-line bg-raised",
+        "relative w-full overflow-hidden rounded-[20px] border border-line bg-raised",
         className,
       )}
     >
-      <div
-        className="flex h-[150px] items-start justify-between p-[22px]"
-        style={{ background: "linear-gradient(to bottom, #3c3a38, #0b0b0b)" }}
-      >
-        <div className="flex flex-col items-center justify-center gap-[1px] py-0.5 font-serif text-foreground">
+      <div className="loyalty-card__header flex h-[166px] items-start justify-between rounded-b-[14px] border-b border-[rgb(190_198_208/0.35)] p-[22px]">
+        <div className="relative z-10 flex flex-col items-center justify-center gap-[1px] py-0.5 font-serif text-foreground">
           <span className="text-[28px] font-semibold leading-none tracking-[0.02em]">
             T/H
           </span>
@@ -32,9 +29,10 @@ export function LoyaltyCard({
           </span>
           <span className="text-[6px] font-medium tracking-[0.34em]">CAFE</span>
         </div>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted [font-family:var(--font-serif)]">
+        <span className="relative z-10 text-[10px] font-semibold uppercase tracking-[0.12em] text-[rgb(214_219_225/0.76)] [font-family:var(--font-serif)]">
           Loyalty Card
         </span>
+        <span aria-hidden="true" className="loyalty-card__shine" />
       </div>
 
       <div className="flex flex-col gap-4 px-5 pb-[22px] pt-[18px]">

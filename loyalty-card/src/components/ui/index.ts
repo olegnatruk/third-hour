@@ -15,4 +15,6 @@ export { QRDisplay, type QrState } from "./QRDisplay";
 export { EmptyState } from "./EmptyState";
 export { Segmented } from "./Segmented";
 export { Sheet } from "./Sheet";
+export { SheetOverlay } from "./SheetOverlay";
 export { InfoNote } from "./InfoNote";
+export { CoffeePourLoader } from "./CoffeePourLoader";

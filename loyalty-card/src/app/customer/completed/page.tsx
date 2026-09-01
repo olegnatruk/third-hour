@@ -5,6 +5,7 @@ import {
   type LoyaltyCardResponse,
 } from "@/lib/api/types";
 import { EmptyState, Panel, StatusBadge, TopBar } from "@/components/ui";
+import { StaggerList, StaggerItem } from "@/components/motion/StaggerList";
 
 function formatDate(iso: string | null): string {
   if (!iso) return "";
@@ -60,11 +61,11 @@ export default async function CompletedCardsPage() {
               )}
             </p>
 
-            <ul className="flex flex-col gap-3">
-              {completed.map((card) => {
+            <StaggerList className="gap-3">
+              {completed.map((card, i) => {
                 const redeemed = redeemedCardIds.has(card.id);
                 return (
-                  <li key={card.id}>
+                  <StaggerItem key={card.id} index={i}>
                     <Panel className="flex items-center gap-3 p-4">
                       <MiniCard />
                       <span className="flex min-w-0 flex-1 flex-col gap-1">
@@ -80,10 +81,10 @@ export default async function CompletedCardsPage() {
                       </span>
                       <StatusBadge kind={redeemed ? "redeemed" : "available"} />
                     </Panel>
-                  </li>
+                  </StaggerItem>
                 );
               })}
-            </ul>
+            </StaggerList>
 
             <p className="text-body-sm text-muted">
               Completed cards stay in your collection forever, even after the

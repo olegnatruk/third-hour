@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api/client";
 import type { SignUpResponse } from "@/lib/api/types";
+import { startNavigationLoader } from "@/components/motion/navigationLoading";
 import { Button, Icon, Input, LogoLockup, SectionHeading } from "@/components/ui";
 
 export function SignUpForm() {
@@ -58,6 +59,7 @@ export function SignUpForm() {
         return;
       }
 
+      startNavigationLoader();
       router.replace("/customer");
       router.refresh();
     } catch (err) {

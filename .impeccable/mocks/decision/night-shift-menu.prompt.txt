@@ -1,0 +1,13 @@
+Use case: ui-mockup
+Asset type: preview-only 16:9 desktop landing-page decision comp, not a production asset
+Primary request: one refined landing-page first viewport for a late-night café named Third Hour, designed as a menu-led editorial web interface.
+Scene/backdrop: deep espresso background #0f0d0c with subtle walnut-paper grain; thin muted-gold #c9a159 hairline rules; warm cream #f5efe3 typography; no gradients.
+Subject: a wide numbered late-night drink menu dominates the left two-thirds: restrained category labels, four long horizontal menu rows, neat two-digit numbers and elegant product-name-like placeholder marks; a single oversized photorealistic iced coffee in a tall clear glass, with real condensation and warm low light, occupies the right third and deliberately breaks the strict grid.
+Composition/framing: true 16:9 landscape desktop browser-frame-free UI mockup. Compact small cream wordmark at top-left must read exactly: "third hour". The left menu is a disciplined vertical rhythm with ample negative space. Below the menu, a narrow calm café-story note and a compact loyalty-stamp note sit side by side, followed by one small square-cornered muted-gold call-to-action button. The drink portrait overlaps a gold rule and extends vertically beyond the main menu’s baseline. Editorial, asymmetrical, quiet, menu-first.
+Style/medium: high-fidelity art-directed web UI mockup; deep espresso, cream, muted gold; Cormorant Garamond-like high-contrast editorial display letterforms only for the prominent menu-name shapes; Inter-like compact utility type for labels; warm authentic café / food photography; tactile printed-menu precision.
+Lighting/mood: intimate late-night café, refined and unhurried, soft amber practical light only on the iced coffee, matte paper texture elsewhere.
+Color palette: exactly deep espresso #0f0d0c, cream #f5efe3, muted gold #c9a159, photography in warm brown coffee tones.
+Materials/textures: walnut paper grain, uncoated stock, thin gold rules, condensation on glass, coffee crema and ice, no glossy plastic UI.
+Text (verbatim): "third hour"
+Constraints: only the small wordmark text should be readable and it must say exactly "third hour". All other typography must be abstract placeholder marks, non-lexical and not meaningfully readable. No watermark. No logos other than the wordmark. No food-delivery-app look. No generic rounded cards. No pills. No gradients. No mock browser chrome. No extra interface panels. Keep the result elegant, menu-led, and ready for a visual-direction comparison.
+Avoid: generic coffee-shop website hero, bright white backdrop, rounded SaaS cards, glassmorphism, neon, illustrated coffee, stock collage, legible body copy, excess text, unrelated icons, watermark.

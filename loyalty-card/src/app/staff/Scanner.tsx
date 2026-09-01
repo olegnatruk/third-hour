@@ -1,9 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { m } from "motion/react";
 import { BrowserQRCodeReader } from "@zxing/browser";
 import { ApiError, apiFetch } from "@/lib/api/client";
 import type { RedeemResult, ScanAwardResult } from "@/lib/api/types";
+import { AnimatedCheck } from "@/components/motion/AnimatedCheck";
+import { CelebrationBurst } from "@/components/motion/CelebrationBurst";
+import { listContainer, listItem, spring } from "@/components/motion/transitions";
 import {
   Button,
   Icon,
@@ -188,49 +192,69 @@ function ScanResult({
   const remaining = 10 - count;
 
   return (
-    <div className="flex flex-col items-center gap-4 px-7 pb-8 pt-4 text-center">
-      <span className="flex size-24 items-center justify-center rounded-full bg-success text-white">
-        <Icon name="check" size={30} />
-      </span>
+    <m.div
+      variants={listContainer}
+      initial="hidden"
+      animate="show"
+      className="flex flex-col items-center gap-4 px-7 pb-8 pt-4 text-center"
+    >
+      <div className="relative flex items-center justify-center">
+        {!isRedeem && completed && <CelebrationBurst />}
+        <m.span
+          initial={{ scale: 0.4, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={spring}
+          className="relative z-10 flex size-24 items-center justify-center rounded-full bg-success text-white"
+        >
+          <AnimatedCheck size={30} />
+        </m.span>
+      </div>
 
-      <h2 className="text-display text-foreground">
+      <m.h2 variants={listItem} className="text-display text-foreground">
         {isRedeem
           ? "Reward redeemed"
           : completed
             ? "Card complete!"
             : "Stamp added"}
-      </h2>
-      <p className="text-body text-muted">
+      </m.h2>
+      <m.p variants={listItem} className="text-body text-muted">
         {isRedeem
           ? result.data.rewardName
           : result.data.idempotent
             ? "This code was already used — no extra stamp given."
             : "1 stamp added by you."}
-      </p>
+      </m.p>
 
       {!isRedeem && (
-        <ProgressRow
-          count={count}
-          message={
-            completed
-              ? "A fresh card is ready at 0 / 10."
-              : `${remaining} more ${remaining === 1 ? "stamp" : "stamps"} until this card is complete`
-          }
-        />
+        <m.div variants={listItem} className="w-full">
+          <ProgressRow
+            count={count}
+            message={
+              completed
+                ? "A fresh card is ready at 0 / 10."
+                : `${remaining} more ${remaining === 1 ? "stamp" : "stamps"} until this card is complete`
+            }
+          />
+        </m.div>
       )}
 
       {!isRedeem && !completed && (
-        <InfoNote icon="gift" tone="accent" className="text-left">
-          When the 10th stamp lands: &ldquo;Card complete — reward earned.&rdquo;
-        </InfoNote>
+        <m.div variants={listItem} className="w-full">
+          <InfoNote icon="gift" tone="accent" className="text-left">
+            When the 10th stamp lands: &ldquo;Card complete — reward
+            earned.&rdquo;
+          </InfoNote>
+        </m.div>
       )}
 
-      <Button variant="primary" onClick={onAgain}>
-        Scan another
-      </Button>
-      <Button variant="ghost" onClick={onAgain}>
-        Back to staff dashboard
-      </Button>
-    </div>
+      <m.div variants={listItem} className="flex w-full flex-col gap-4">
+        <Button variant="primary" onClick={onAgain}>
+          Scan another
+        </Button>
+        <Button variant="ghost" onClick={onAgain}>
+          Back to staff dashboard
+        </Button>
+      </m.div>
+    </m.div>
   );
 }

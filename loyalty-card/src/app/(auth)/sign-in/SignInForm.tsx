@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ApiError, apiFetch } from "@/lib/api/client";
 import type { SessionUser } from "@/lib/api/types";
 import { homePathForRole } from "@/lib/auth/roles";
+import { startNavigationLoader } from "@/components/motion/navigationLoading";
 import { Button, Input, LogoLockup, SectionHeading } from "@/components/ui";
 
 export function SignInForm() {
@@ -26,6 +27,7 @@ export function SignInForm() {
         body: { email, password },
       });
       const { user } = await apiFetch<{ user: SessionUser }>("/api/auth/me");
+      startNavigationLoader();
       router.replace(homePathForRole(user.role));
       router.refresh();
     } catch (err) {
